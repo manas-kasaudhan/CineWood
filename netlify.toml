@@ -4,6 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_TMDB_API_KEY = "154102dceab8ac9afcab694074079db4"
+  VITE_TMDB_BASE_URL = "https://api.themoviedb.org/3"
+  VITE_TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p"
 
 [[redirects]]
   from = "/*"
