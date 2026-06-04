@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   RiFilmLine, RiSearchLine, RiUserLine, RiRobot2Line,
-  RiStarLine, RiMenuLine, RiCloseLine, RiHeartLine
+  RiMenuLine, RiCloseLine, RiHeartLine, RiLoginBoxLine
 } from 'react-icons/ri';
 
 const navLinks = [
@@ -17,6 +17,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -44,12 +45,12 @@ export default function Navbar() {
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-2.5 group">
             <div className="relative w-8 h-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-lavender to-dusty rounded-lg opacity-80 group-hover:opacity-100 transition-opacity" />
-              <RiFilmLine className="relative z-10 text-noir w-5 h-5 m-1.5" />
+              <div className="absolute inset-0 bg-gradient-to-br from-coral to-teal rounded-lg opacity-85 group-hover:opacity-100 transition-opacity" />
+              <RiFilmLine className="relative z-10 text-white w-5 h-5 m-1.5" />
             </div>
             <span className="font-display font-semibold text-xl tracking-tight">
               <span className="gradient-text">Cine</span>
-              <span className="text-cream/80">wood</span>
+              <span className="text-cream/85">wood</span>
             </span>
           </NavLink>
 
@@ -62,8 +63,8 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group ${
                     isActive
-                      ? 'text-lavender'
-                      : 'text-cream/50 hover:text-cream/90'
+                      ? 'text-coral'
+                      : 'text-cream/55 hover:text-cream/90'
                   }`
                 }
               >
@@ -74,7 +75,7 @@ export default function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 bg-lavender/10 rounded-xl border border-lavender/20"
+                        className="absolute inset-0 bg-coral/10 rounded-xl border border-coral/20"
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -88,17 +89,27 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <NavLink
               to="/profile"
-              className="flex items-center gap-1.5 px-4 py-2 glass rounded-xl text-sm text-cream/60 hover:text-cream transition-all hover:border-lavender/30 animated-border"
+              className="flex items-center gap-1.5 px-3 py-2 glass rounded-xl text-sm text-cream/60 hover:text-cream transition-all hover:border-teal/30 animated-border"
             >
               <RiHeartLine className="w-4 h-4" />
               <span>Watchlist</span>
             </NavLink>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => navigate('/login')}
+              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-coral to-coral-light rounded-xl text-sm font-semibold text-white shadow-md hover:shadow-glow-coral transition-all duration-300"
+            >
+              <RiLoginBoxLine className="w-4 h-4" />
+              <span>Sign In</span>
+            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             className="md:hidden glass p-2.5 rounded-xl text-cream/70 hover:text-cream transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
           >
             {mobileOpen ? <RiCloseLine className="w-5 h-5" /> : <RiMenuLine className="w-5 h-5" />}
           </button>
@@ -127,7 +138,7 @@ export default function Navbar() {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all ${
                       isActive
-                        ? 'bg-lavender/10 text-lavender border border-lavender/20'
+                        ? 'bg-coral/10 text-coral border border-coral/20'
                         : 'text-cream/60 hover:text-cream hover:bg-white/5'
                     }`
                   }
@@ -137,6 +148,21 @@ export default function Navbar() {
                 </NavLink>
               </motion.div>
             ))}
+            <div className="mt-3 pt-3 border-t border-white/10 flex gap-2">
+              <button
+                onClick={() => { navigate('/login'); setMobileOpen(false); }}
+                className="flex-1 flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-coral to-coral-light rounded-xl text-sm font-semibold text-white"
+              >
+                <RiLoginBoxLine className="w-4 h-4" />
+                Sign In
+              </button>
+              <button
+                onClick={() => { navigate('/signup'); setMobileOpen(false); }}
+                className="flex-1 flex items-center justify-center gap-2 py-3 border border-white/15 rounded-xl text-sm text-cream/70 hover:text-cream transition-colors"
+              >
+                Sign Up
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

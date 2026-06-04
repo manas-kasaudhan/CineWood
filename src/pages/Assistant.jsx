@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getMoodMovies, MOOD_MAPPINGS } from '../lib/tmdb';
+import { aiRecommend } from '../lib/api';
 import { useApp } from '../context/AppContext';
 import MovieCard from '../components/MovieCard';
 import GlowButton from '../components/GlowButton';
@@ -101,10 +101,10 @@ export default function Assistant() {
     await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
 
     try {
-      const data = await getMoodMovies(detectedMood);
-      const movies = (data.results || []).filter(m => m.poster_path).slice(0, 6);
-      const moodLabel = MOOD_MAPPINGS[detectedMood]?.label || 'curated';
-      const aiResponse = AI_RESPONSES[detectedMood] || AI_RESPONSES.popular;
+      const data = await aiRecommend(text);
+      const movies = data.movies || [];
+      const moodLabel = data.mood || 'curated';
+      const aiResponse = data.message || AI_RESPONSES.popular;
 
       const aiMsg = {
         role: 'ai',

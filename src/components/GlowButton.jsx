@@ -18,24 +18,32 @@ export default function GlowButton({
 
   const variants = {
     primary: {
-      base: 'bg-gradient-to-r from-lavender/20 to-dusty/15 border border-lavender/30 text-lavender hover:from-lavender/30 hover:to-dusty/25 hover:border-lavender/50',
-      glow: 'rgba(196,181,253,0.4)',
+      base: 'bg-gradient-to-r from-coral/20 to-teal/15 border border-coral/35 text-coral hover:from-coral/30 hover:to-teal/25 hover:border-coral/55',
+      glow: 'rgba(255,107,107,0.45)',
     },
     peach: {
-      base: 'bg-gradient-to-r from-peach/20 to-lavender/15 border border-peach/30 text-peach hover:from-peach/30 hover:to-lavender/25 hover:border-peach/50',
-      glow: 'rgba(254,203,161,0.4)',
+      base: 'bg-gradient-to-r from-sun/20 to-coral/15 border border-sun/35 text-sun hover:from-sun/30 hover:to-coral/25 hover:border-sun/55',
+      glow: 'rgba(255,217,61,0.45)',
+    },
+    teal: {
+      base: 'bg-gradient-to-r from-teal/20 to-violet/15 border border-teal/35 text-teal hover:from-teal/30 hover:to-violet/25 hover:border-teal/55',
+      glow: 'rgba(78,205,196,0.45)',
     },
     solid: {
-      base: 'bg-lavender text-noir hover:bg-lavender/90 border border-transparent',
-      glow: 'rgba(196,181,253,0.5)',
+      base: 'bg-gradient-to-r from-coral to-coral-light text-white border border-transparent hover:from-coral-dark hover:to-coral shadow-lg',
+      glow: 'rgba(255,107,107,0.55)',
+    },
+    solid_teal: {
+      base: 'bg-gradient-to-r from-teal to-teal-light text-navy font-semibold border border-transparent hover:from-teal-dark hover:to-teal',
+      glow: 'rgba(78,205,196,0.55)',
     },
     ghost: {
-      base: 'bg-transparent border border-white/10 text-cream/60 hover:text-cream hover:border-white/20',
+      base: 'bg-transparent border border-white/15 text-cream/65 hover:text-cream hover:border-white/25',
       glow: 'rgba(255,255,255,0.2)',
     },
     danger: {
-      base: 'bg-dusty/10 border border-dusty/30 text-dusty hover:bg-dusty/20',
-      glow: 'rgba(232,160,191,0.4)',
+      base: 'bg-coral/10 border border-coral/35 text-coral hover:bg-coral/20',
+      glow: 'rgba(255,107,107,0.45)',
     },
   };
 

@@ -8,6 +8,11 @@ import Recommendations from './pages/Recommendations';
 import MovieDetails from './pages/MovieDetails';
 import Assistant from './pages/Assistant';
 import Profile from './pages/Profile';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+
+// Auth pages don't show the Navbar
+const AUTH_ROUTES = ['/signup', '/login'];
 
 // Page transition wrapper
 function PageWrapper({ children }) {
@@ -25,16 +30,23 @@ function PageWrapper({ children }) {
 
 function AppRoutes() {
   const location = useLocation();
+  const isAuthPage = AUTH_ROUTES.includes(location.pathname);
+
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
-        <Route path="/recommendations" element={<PageWrapper><Recommendations /></PageWrapper>} />
-        <Route path="/movie/:id" element={<PageWrapper><MovieDetails /></PageWrapper>} />
-        <Route path="/assistant" element={<PageWrapper><Assistant /></PageWrapper>} />
-        <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
-      </Routes>
-    </AnimatePresence>
+    <>
+      {!isAuthPage && <Navbar />}
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageWrapper><Landing /></PageWrapper>} />
+          <Route path="/recommendations" element={<PageWrapper><Recommendations /></PageWrapper>} />
+          <Route path="/movie/:id" element={<PageWrapper><MovieDetails /></PageWrapper>} />
+          <Route path="/assistant" element={<PageWrapper><Assistant /></PageWrapper>} />
+          <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
+          <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
+          <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -43,7 +55,6 @@ export default function App() {
     <AppProvider>
       <BrowserRouter>
         <FilmGrain />
-        <Navbar />
         <AppRoutes />
       </BrowserRouter>
     </AppProvider>

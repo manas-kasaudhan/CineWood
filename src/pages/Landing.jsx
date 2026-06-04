@@ -69,7 +69,7 @@ export default function Landing() {
   }, [trending]);
 
   const heroMovie = featured || trending[0];
-  const backdropUrl = getBackdropUrl(heroMovie?.backdrop_path, 'original');
+  const backdropUrl = getBackdropUrl(heroMovie?.backdrop_path, 'w1280');
 
   const floatingPosters = trending.slice(1, 8);
 
@@ -92,6 +92,9 @@ export default function Landing() {
                 src={backdropUrl}
                 alt=""
                 className="w-full h-full object-cover scale-105"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/85 to-noir/30" />
               <div className="absolute inset-0 bg-gradient-to-t from-noir via-transparent to-noir/40" />
@@ -100,9 +103,9 @@ export default function Landing() {
         </AnimatePresence>
 
         {/* Ambient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 ambient-orb bg-lavender/20 animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 ambient-orb bg-dusty/15 animate-float-slow" />
-        <div className="absolute top-1/2 right-1/3 w-48 h-48 ambient-orb bg-mist/15 animate-float-fast" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 ambient-orb bg-coral/15 animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 ambient-orb bg-teal/12 animate-float-slow" />
+        <div className="absolute top-1/2 right-1/3 w-48 h-48 ambient-orb bg-sun/10 animate-float-fast" />
 
         {/* Floating Posters */}
         {!loading && floatingPosters.slice(0, 5).map((m, i) => (
@@ -133,7 +136,7 @@ export default function Landing() {
           >
             {/* Badge */}
             <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-cream/60 border border-white/10 mb-8">
-              <RiSparklingLine className="w-3.5 h-3.5 text-lavender" />
+              <RiSparklingLine className="w-3.5 h-3.5 text-coral" />
               <span>AI-Powered Cinema Discovery</span>
             </div>
 
@@ -186,7 +189,7 @@ export default function Landing() {
               className="mt-16 flex items-center gap-4"
             >
               <div className="flex items-center gap-3 glass px-4 py-3 rounded-2xl border border-white/10">
-                <RiPlayCircleLine className="w-5 h-5 text-lavender" />
+                <RiPlayCircleLine className="w-5 h-5 text-coral" />
                 <div>
                   <p className="text-cream/40 text-xs uppercase tracking-widest">Now Trending</p>
                   <p className="text-cream font-medium text-sm mt-0.5">{heroMovie.title}</p>
@@ -199,7 +202,7 @@ export default function Landing() {
                     key={i}
                     onClick={() => { setHeroIndex(i); setFeatured(trending[i]); }}
                     className={`rounded-full transition-all duration-300 ${
-                      i === heroIndex ? 'w-6 h-1.5 bg-lavender' : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
+                      i === heroIndex ? 'w-6 h-1.5 bg-coral' : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
                     }`}
                   />
                 ))}
@@ -229,8 +232,8 @@ export default function Landing() {
           className="flex items-end justify-between mb-10"
         >
           <div>
-            <p className="text-lavender text-sm font-medium tracking-widest uppercase mb-2">This Week</p>
-            <h2 className="font-display text-3xl md:text-4xl text-cream">Trending Now</h2>
+            <p className="text-coral text-sm font-medium tracking-widest uppercase mb-2">This Week</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Trending Now</h2>
           </div>
           <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>
             See All
@@ -276,8 +279,8 @@ export default function Landing() {
             className="flex items-end justify-between mb-10"
           >
             <div>
-              <p className="text-dusty text-sm font-medium tracking-widest uppercase mb-2">In Theaters</p>
-              <h2 className="font-display text-3xl md:text-4xl text-cream">Now Playing</h2>
+              <p className="text-teal text-sm font-medium tracking-widest uppercase mb-2">In Theaters</p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Now Playing</h2>
             </div>
             <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>
               See All
@@ -308,9 +311,9 @@ export default function Landing() {
           className="relative overflow-hidden rounded-3xl p-12 md:p-20 text-center"
         >
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-lavender/10 via-noir-light/50 to-dusty/10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-coral/10 via-navy-light/50 to-teal/8" />
           <div className="absolute inset-0 border border-white/8 rounded-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 ambient-orb bg-lavender/20 animate-float" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 ambient-orb bg-coral/15 animate-float" />
 
           <div className="relative z-10">
             <motion.div
@@ -319,7 +322,7 @@ export default function Landing() {
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <RiSparklingLine className="w-10 h-10 text-lavender mx-auto mb-6" />
+              <RiSparklingLine className="w-10 h-10 text-sun mx-auto mb-6" />
               <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
                 Let the AI guide your next{' '}
                 <span className="gradient-text">cinematic journey.</span>
@@ -345,8 +348,8 @@ export default function Landing() {
           className="flex items-end justify-between mb-10"
         >
           <div>
-            <p className="text-peach text-sm font-medium tracking-widest uppercase mb-2">Highly Rated</p>
-            <h2 className="font-display text-3xl md:text-4xl text-cream">Popular Films</h2>
+            <p className="text-sun text-sm font-medium tracking-widest uppercase mb-2">Highly Rated</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Popular Films</h2>
           </div>
           <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>
             Explore More
