@@ -9,11 +9,10 @@ import MovieDetails from './pages/MovieDetails';
 import Assistant from './pages/Assistant';
 import Profile from './pages/Profile';
 import Reports from './pages/Reports';
-import Signup from './pages/Signup';
 import Login from './pages/Login';
 
 // Auth pages don't show the Navbar
-const AUTH_ROUTES = ['/signup', '/login'];
+const AUTH_ROUTES = ['/login'];
 
 // Page transition wrapper
 function PageWrapper({ children }) {
@@ -44,7 +43,6 @@ function AppRoutes() {
           <Route path="/assistant" element={<PageWrapper><Assistant /></PageWrapper>} />
           <Route path="/profile" element={<PageWrapper><Profile /></PageWrapper>} />
           <Route path="/reports" element={<PageWrapper><Reports /></PageWrapper>} />
-          <Route path="/signup" element={<PageWrapper><Signup /></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
         </Routes>
       </AnimatePresence>

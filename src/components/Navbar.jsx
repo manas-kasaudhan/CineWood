@@ -208,12 +208,6 @@ export default function Navbar() {
                     <RiLoginBoxLine className="w-4 h-4" />
                     Sign In
                   </button>
-                  <button
-                    onClick={() => { navigate('/signup'); setMobileOpen(false); }}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 border border-slate rounded-xl text-sm text-cream/60 hover:text-cream transition-colors"
-                  >
-                    Sign Up
-                  </button>
                 </>
               )}
             </div>

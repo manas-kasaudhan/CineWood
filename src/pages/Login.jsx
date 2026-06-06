@@ -69,10 +69,7 @@ export default function Login() {
 
           <h1 className="font-display text-3xl font-bold text-cream mb-1">Welcome back</h1>
           <p className="text-cream/40 text-sm mb-7">
-            New here?{' '}
-            <Link to="/signup" className="text-primary hover:text-primary-light transition-colors font-medium">
-              Create an account
-            </Link>
+            Please enter your details to sign in.
           </p>
 
           {/* API Error */}
