@@ -1,13 +1,26 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from app.config import settings
-from app.routes import movies, ai
+from app.database import connect_db, close_db
+from app.routes import movies, ai, auth, user_data
 import uvicorn
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    await connect_db()
+    yield
+    # Shutdown
+    await close_db()
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Backend API for Cinewood movie recommendation platform",
-    version="1.0.0"
+    version="2.0.0",
+    lifespan=lifespan,
 )
 
 # Setup CORS to allow React frontend
@@ -20,12 +33,14 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(auth.router)
 app.include_router(movies.router)
 app.include_router(ai.router)
+app.include_router(user_data.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Cinewood API"}
+    return {"message": "Welcome to the Cinewood API", "version": "2.0.0"}
 
 @app.get("/health")
 async def health_check():

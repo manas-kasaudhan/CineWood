@@ -1,80 +1,140 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useAuth } from './AuthContext';
+import {
+  fetchUserData,
+  apiAddToWatchlist, apiRemoveFromWatchlist,
+  apiToggleFavorite,
+  apiAddToHistory,
+  apiAddMood,
+} from '../lib/api';
 
 const AppContext = createContext(null);
 
+// ── localStorage helpers ────────────────────────────
+function loadLocal(key, fallback = []) {
+  try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+  catch { return fallback; }
+}
+function saveLocal(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
 export function AppProvider({ children }) {
-  const [watchlist, setWatchlist] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cw_watchlist')) || []; }
-    catch { return []; }
-  });
+  const { isAuthenticated, loading: authLoading } = useAuth();
 
-  const [favorites, setFavorites] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cw_favorites')) || []; }
-    catch { return []; }
-  });
+  const [watchlist, setWatchlist] = useState(() => loadLocal('cw_watchlist'));
+  const [favorites, setFavorites] = useState(() => loadLocal('cw_favorites'));
+  const [recentlyWatched, setRecentlyWatched] = useState(() => loadLocal('cw_recent'));
+  const [moodHistory, setMoodHistory] = useState(() => loadLocal('cw_moods'));
+  const [syncing, setSyncing] = useState(false);
 
-  const [recentlyWatched, setRecentlyWatched] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cw_recent')) || []; }
-    catch { return []; }
-  });
-
-  const [moodHistory, setMoodHistory] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cw_moods')) || []; }
-    catch { return []; }
-  });
-
-  // Persist to localStorage
+  // ── Hydrate from API when authenticated ───────────
   useEffect(() => {
-    localStorage.setItem('cw_watchlist', JSON.stringify(watchlist));
-  }, [watchlist]);
+    if (authLoading) return;
 
-  useEffect(() => {
-    localStorage.setItem('cw_favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    if (isAuthenticated) {
+      setSyncing(true);
+      fetchUserData()
+        .then(data => {
+          // Map API movie_id to id for frontend compatibility
+          const mapMovies = (items) => items.map(m => ({
+            ...m,
+            id: m.movie_id || m.id,
+          }));
 
-  useEffect(() => {
-    localStorage.setItem('cw_recent', JSON.stringify(recentlyWatched));
-  }, [recentlyWatched]);
+          setWatchlist(mapMovies(data.watchlist || []));
+          setFavorites(mapMovies(data.favorites || []));
+          setRecentlyWatched(mapMovies(data.watch_history || []));
+          setMoodHistory(data.mood_history || []);
+          setSyncing(false);
+        })
+        .catch(() => setSyncing(false));
+    } else {
+      // Guest mode — load from localStorage
+      setWatchlist(loadLocal('cw_watchlist'));
+      setFavorites(loadLocal('cw_favorites'));
+      setRecentlyWatched(loadLocal('cw_recent'));
+      setMoodHistory(loadLocal('cw_moods'));
+    }
+  }, [isAuthenticated, authLoading]);
 
-  useEffect(() => {
-    localStorage.setItem('cw_moods', JSON.stringify(moodHistory));
-  }, [moodHistory]);
+  // ── Persist to localStorage (guest mode backup) ───
+  useEffect(() => { saveLocal('cw_watchlist', watchlist); }, [watchlist]);
+  useEffect(() => { saveLocal('cw_favorites', favorites); }, [favorites]);
+  useEffect(() => { saveLocal('cw_recent', recentlyWatched); }, [recentlyWatched]);
+  useEffect(() => { saveLocal('cw_moods', moodHistory); }, [moodHistory]);
 
-  const addToWatchlist = (movie) => {
+  // ── Watchlist ─────────────────────────────────────
+  const addToWatchlist = useCallback((movie) => {
     setWatchlist(prev => {
       if (prev.find(m => m.id === movie.id)) return prev;
       return [movie, ...prev];
     });
-  };
+    if (isAuthenticated) {
+      apiAddToWatchlist({
+        movie_id: movie.id, title: movie.title,
+        poster_path: movie.poster_path, vote_average: movie.vote_average,
+        release_date: movie.release_date, genre_ids: movie.genre_ids || [],
+      }).catch(console.error);
+    }
+  }, [isAuthenticated]);
 
-  const removeFromWatchlist = (id) => {
+  const removeFromWatchlist = useCallback((id) => {
     setWatchlist(prev => prev.filter(m => m.id !== id));
-  };
+    if (isAuthenticated) {
+      apiRemoveFromWatchlist(id).catch(console.error);
+    }
+  }, [isAuthenticated]);
 
   const isInWatchlist = (id) => watchlist.some(m => m.id === id);
 
-  const toggleFavorite = (movie) => {
+  // ── Favorites ─────────────────────────────────────
+  const toggleFavorite = useCallback((movie) => {
     setFavorites(prev => {
       if (prev.find(m => m.id === movie.id)) return prev.filter(m => m.id !== movie.id);
       return [movie, ...prev];
     });
-  };
+    if (isAuthenticated) {
+      apiToggleFavorite({
+        movie_id: movie.id, title: movie.title,
+        poster_path: movie.poster_path, vote_average: movie.vote_average,
+        release_date: movie.release_date, genre_ids: movie.genre_ids || [],
+      }).catch(console.error);
+    }
+  }, [isAuthenticated]);
 
   const isFavorite = (id) => favorites.some(m => m.id === id);
 
-  const addToRecent = (movie) => {
+  // ── Watch History ─────────────────────────────────
+  const addToRecent = useCallback((movie) => {
     setRecentlyWatched(prev => {
       const filtered = prev.filter(m => m.id !== movie.id);
       return [{ ...movie, watchedAt: Date.now() }, ...filtered].slice(0, 20);
     });
-  };
+    if (isAuthenticated) {
+      apiAddToHistory({
+        movie_id: movie.id, title: movie.title,
+        poster_path: movie.poster_path, vote_average: movie.vote_average,
+        release_date: movie.release_date, genre_ids: movie.genre_ids || [],
+      }).catch(console.error);
+    }
+  }, [isAuthenticated]);
 
-  const addMoodEntry = (mood, movies) => {
-    setMoodHistory(prev => [
-      { mood, movies: movies.slice(0, 4), timestamp: Date.now() },
-      ...prev
-    ].slice(0, 10));
-  };
+  // ── Mood History ──────────────────────────────────
+  const addMoodEntry = useCallback((mood, movies) => {
+    const entry = {
+      mood,
+      movies: movies.slice(0, 4).map(m => ({
+        movie_id: m.id, title: m.title,
+        poster_path: m.poster_path, vote_average: m.vote_average,
+      })),
+      timestamp: Date.now(),
+    };
+    setMoodHistory(prev => [entry, ...prev].slice(0, 10));
+    if (isAuthenticated) {
+      apiAddMood(entry).catch(console.error);
+    }
+  }, [isAuthenticated]);
 
   return (
     <AppContext.Provider value={{
@@ -82,6 +142,7 @@ export function AppProvider({ children }) {
       favorites, toggleFavorite, isFavorite,
       recentlyWatched, addToRecent,
       moodHistory, addMoodEntry,
+      syncing,
     }}>
       {children}
     </AppContext.Provider>

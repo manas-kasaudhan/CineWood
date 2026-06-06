@@ -37,3 +37,11 @@ coverage/
 
 # Vite
 *.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+backend/.env

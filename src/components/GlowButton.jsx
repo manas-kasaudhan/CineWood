@@ -18,32 +18,25 @@ export default function GlowButton({
 
   const variants = {
     primary: {
-      base: 'bg-gradient-to-r from-coral/20 to-teal/15 border border-coral/35 text-coral hover:from-coral/30 hover:to-teal/25 hover:border-coral/55',
-      glow: 'rgba(255,107,107,0.45)',
+      base: 'bg-primary/10 border border-primary/25 text-primary hover:bg-primary/15 hover:border-primary/40',
     },
     peach: {
-      base: 'bg-gradient-to-r from-sun/20 to-coral/15 border border-sun/35 text-sun hover:from-sun/30 hover:to-coral/25 hover:border-sun/55',
-      glow: 'rgba(255,217,61,0.45)',
+      base: 'bg-amber/10 border border-amber/25 text-amber hover:bg-amber/15 hover:border-amber/40',
     },
     teal: {
-      base: 'bg-gradient-to-r from-teal/20 to-violet/15 border border-teal/35 text-teal hover:from-teal/30 hover:to-violet/25 hover:border-teal/55',
-      glow: 'rgba(78,205,196,0.45)',
+      base: 'bg-accent/10 border border-accent/25 text-accent hover:bg-accent/15 hover:border-accent/40',
     },
     solid: {
-      base: 'bg-gradient-to-r from-coral to-coral-light text-white border border-transparent hover:from-coral-dark hover:to-coral shadow-lg',
-      glow: 'rgba(255,107,107,0.55)',
+      base: 'bg-primary text-white border border-transparent hover:bg-primary-dark shadow-soft',
     },
     solid_teal: {
-      base: 'bg-gradient-to-r from-teal to-teal-light text-navy font-semibold border border-transparent hover:from-teal-dark hover:to-teal',
-      glow: 'rgba(78,205,196,0.55)',
+      base: 'bg-accent text-noir font-semibold border border-transparent hover:bg-accent-dark',
     },
     ghost: {
-      base: 'bg-transparent border border-white/15 text-cream/65 hover:text-cream hover:border-white/25',
-      glow: 'rgba(255,255,255,0.2)',
+      base: 'bg-transparent border border-slate text-cream/55 hover:text-cream hover:border-cream/20',
     },
     danger: {
-      base: 'bg-coral/10 border border-coral/35 text-coral hover:bg-coral/20',
-      glow: 'rgba(255,107,107,0.45)',
+      base: 'bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500/15',
     },
   };
 
@@ -54,16 +47,15 @@ export default function GlowButton({
     <motion.button
       type={type}
       whileHover={{
-        scale: disabled ? 1 : 1.03,
-        boxShadow: disabled ? 'none' : `0 0 30px ${v.glow}`,
+        scale: disabled ? 1 : 1.015,
       }}
-      whileTap={{ scale: disabled ? 1 : 0.97 }}
+      whileTap={{ scale: disabled ? 1 : 0.98 }}
       transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
       onClick={onClick}
       disabled={disabled}
       className={`
         inline-flex items-center justify-center gap-2 rounded-xl font-medium
-        transition-all duration-300 backdrop-blur-sm cursor-pointer
+        transition-all duration-300 cursor-pointer
         disabled:opacity-40 disabled:cursor-not-allowed
         ${v.base} ${s} ${className}
       `}

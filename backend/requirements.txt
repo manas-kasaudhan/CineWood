@@ -6,3 +6,6 @@ numpy
 httpx
 python-dotenv
 pydantic
+motor
+python-jose[cryptography]
+passlib[bcrypt]

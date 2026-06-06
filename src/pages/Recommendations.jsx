@@ -8,7 +8,7 @@ import MovieCard from '../components/MovieCard';
 import SearchBar from '../components/SearchBar';
 import GenreChip from '../components/GenreChip';
 import { SkeletonRow } from '../components/Skeleton';
-import { RiFilter3Line, RiGridLine, RiSparklingLine } from 'react-icons/ri';
+import { RiFilter3Line, RiGridLine, RiFilmLine } from 'react-icons/ri';
 
 const SORT_OPTIONS = [
   { label: 'Popularity', value: 'popularity.desc' },
@@ -95,26 +95,26 @@ export default function Recommendations() {
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="mb-12"
         >
-          <p className="text-lavender text-sm font-medium tracking-widest uppercase mb-2 flex items-center gap-2">
-            <RiSparklingLine className="w-3.5 h-3.5" />
+          <p className="text-primary text-sm font-medium tracking-widest uppercase mb-2 flex items-center gap-2">
+            <RiFilmLine className="w-3.5 h-3.5" />
             Discover
           </p>
           <h1 className="font-display text-4xl md:text-5xl text-cream mb-2">Find Your Film</h1>
-          <p className="text-cream/40 text-base">
+          <p className="text-cream/35 text-base">
             {isSearching ? `Results for "${query}"` : 'Browse by genre, mood, or trending'}
           </p>
         </motion.div>
 
         {/* Search */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.6 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
           className="mb-8"
         >
           <SearchBar
@@ -126,14 +126,14 @@ export default function Recommendations() {
 
         {/* Filters Row */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.6 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
           className="flex flex-col lg:flex-row gap-4 mb-12"
         >
           {/* Genre Chips */}
           <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2 flex-1">
-            <RiFilter3Line className="w-4 h-4 text-cream/30 shrink-0" />
+            <RiFilter3Line className="w-4 h-4 text-cream/25 shrink-0" />
             <GenreChip
               label="All"
               active={!activeGenre}
@@ -154,16 +154,16 @@ export default function Recommendations() {
           {/* Sort Selector */}
           {!isSearching && (
             <div className="flex items-center gap-2 shrink-0">
-              <RiGridLine className="w-4 h-4 text-cream/30" />
-              <div className="flex items-center gap-1 glass rounded-xl p-1 border border-white/8">
+              <RiGridLine className="w-4 h-4 text-cream/25" />
+              <div className="flex items-center gap-1 glass rounded-xl p-1 border border-slate">
                 {SORT_OPTIONS.map(opt => (
                   <button
                     key={opt.value}
                     onClick={() => handleSort(opt.value)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       sortBy === opt.value
-                        ? 'bg-lavender/20 text-lavender border border-lavender/30'
-                        : 'text-cream/40 hover:text-cream/70'
+                        ? 'bg-primary/15 text-primary border border-primary/25'
+                        : 'text-cream/35 hover:text-cream/60'
                     }`}
                   >
                     {opt.label}
@@ -191,12 +191,12 @@ export default function Recommendations() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.3 }}
             >
               {displayMovies.length === 0 ? (
                 <div className="py-32 text-center">
-                  <p className="text-cream/20 text-6xl mb-4">🎬</p>
-                  <p className="text-cream/40 text-lg">No films found. Try a different search.</p>
+                  <p className="text-cream/15 text-6xl mb-4">🎬</p>
+                  <p className="text-cream/35 text-lg">No films found. Try a different search.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -218,7 +218,7 @@ export default function Recommendations() {
           >
             <button
               onClick={() => setPage(p => p + 1)}
-              className="glass px-8 py-3 rounded-2xl border border-white/10 text-cream/60 hover:text-cream hover:border-lavender/30 transition-all text-sm font-medium animated-border"
+              className="glass px-8 py-3 rounded-xl border border-slate text-cream/50 hover:text-cream hover:border-primary/25 transition-all text-sm font-medium"
             >
               Load More Films
             </button>
@@ -227,7 +227,7 @@ export default function Recommendations() {
 
         {loading && page > 1 && (
           <div className="flex justify-center mt-8">
-            <div className="w-6 h-6 border-2 border-lavender/30 border-t-lavender rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-primary/25 border-t-primary rounded-full animate-spin" />
           </div>
         )}
       </div>

@@ -41,25 +41,25 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' })
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-noir/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-noir/85 backdrop-blur-sm"
             onClick={onClose}
           />
 
           {/* Panel */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 10 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className={`relative w-full ${sizes[size]} glass-strong rounded-3xl border border-white/10 overflow-hidden`}
+            exit={{ opacity: 0, scale: 0.97, y: 8 }}
+            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            className={`relative w-full ${sizes[size]} glass-strong rounded-2xl border border-slate overflow-hidden`}
           >
             {/* Header */}
             {title && (
-              <div className="flex items-center justify-between px-6 py-5 border-b border-white/8">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-slate">
                 <h2 className="font-display text-xl text-cream">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="w-8 h-8 glass rounded-full flex items-center justify-center text-cream/50 hover:text-cream transition-colors border border-white/10"
+                  className="w-8 h-8 glass rounded-full flex items-center justify-center text-cream/45 hover:text-cream transition-colors border border-slate"
                 >
                   <RiCloseLine className="w-4 h-4" />
                 </button>
@@ -70,7 +70,7 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' })
             {!title && (
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-10 w-9 h-9 bg-noir/60 backdrop-blur-md rounded-full flex items-center justify-center text-cream/70 hover:text-cream border border-white/15 transition-all hover:border-white/30"
+                className="absolute top-4 right-4 z-10 w-9 h-9 bg-noir/70 backdrop-blur-md rounded-full flex items-center justify-center text-cream/60 hover:text-cream border border-slate transition-all hover:border-cream/20"
               >
                 <RiCloseLine className="w-4 h-4" />
               </button>

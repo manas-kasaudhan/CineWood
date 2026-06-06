@@ -12,23 +12,7 @@ import GlowButton from '../components/GlowButton';
 import MovieCard from '../components/MovieCard';
 import SearchBar from '../components/SearchBar';
 import { SkeletonCard } from '../components/Skeleton';
-import { RiPlayCircleLine, RiArrowRightLine, RiSparklingLine, RiFilmLine } from 'react-icons/ri';
-
-const FloatingPoster = ({ movie, style, delay }) => {
-  const posterUrl = getImageUrl(movie?.poster_path, 'w342');
-  if (!posterUrl) return null;
-  return (
-    <motion.div
-      className="absolute rounded-2xl overflow-hidden shadow-card opacity-30 hover:opacity-60 transition-opacity duration-500"
-      style={style}
-      animate={{ y: [0, -18, 0], rotate: [style.rotate, style.rotate + 2, style.rotate] }}
-      transition={{ duration: 6 + delay, repeat: Infinity, ease: 'easeInOut', delay }}
-    >
-      <img src={posterUrl} alt="" className="w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-noir/40 to-transparent" />
-    </motion.div>
-  );
-};
+import { RiPlayCircleLine, RiArrowRightLine, RiFilmLine, RiChat3Line } from 'react-icons/ri';
 
 export default function Landing() {
   const [trending, setTrending] = useState([]);
@@ -41,7 +25,7 @@ export default function Landing() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef });
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   useEffect(() => {
     Promise.all([getTrending(), getNowPlaying(), getPopular()])
@@ -71,8 +55,6 @@ export default function Landing() {
   const heroMovie = featured || trending[0];
   const backdropUrl = getBackdropUrl(heroMovie?.backdrop_path, 'w1280');
 
-  const floatingPosters = trending.slice(1, 8);
-
   return (
     <div className="min-h-screen bg-noir overflow-x-hidden">
       {/* ── Hero ─────────────────────────────────────── */}
@@ -96,33 +78,11 @@ export default function Landing() {
                 fetchPriority="high"
                 decoding="async"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/85 to-noir/30" />
-              <div className="absolute inset-0 bg-gradient-to-t from-noir via-transparent to-noir/40" />
+              <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/90 to-noir/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-noir via-transparent to-noir/50" />
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Ambient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 ambient-orb bg-coral/15 animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 ambient-orb bg-teal/12 animate-float-slow" />
-        <div className="absolute top-1/2 right-1/3 w-48 h-48 ambient-orb bg-sun/10 animate-float-fast" />
-
-        {/* Floating Posters */}
-        {!loading && floatingPosters.slice(0, 5).map((m, i) => (
-          <FloatingPoster
-            key={m.id}
-            movie={m}
-            delay={i * 0.8}
-            style={{
-              width: `${100 + i * 20}px`,
-              height: `${150 + i * 30}px`,
-              right: `${3 + i * 8}%`,
-              top: `${15 + i * 12}%`,
-              rotate: `${-8 + i * 4}deg`,
-              zIndex: 5 - i,
-            }}
-          />
-        ))}
 
         {/* Hero Content */}
         <motion.div
@@ -130,26 +90,26 @@ export default function Landing() {
           className="relative z-10 max-w-7xl mx-auto px-6 pt-28 pb-20"
         >
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-cream/60 border border-white/10 mb-8">
-              <RiSparklingLine className="w-3.5 h-3.5 text-coral" />
-              <span>AI-Powered Cinema Discovery</span>
+            <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-sm text-cream/50 border border-slate mb-8">
+              <RiFilmLine className="w-3.5 h-3.5 text-primary" />
+              <span>Cinema Discovery</span>
             </div>
 
             {/* Title */}
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-semibold leading-[0.95] tracking-tight mb-6 max-w-3xl">
               <span className="text-cream">Discover films</span>
               <br />
-              <span className="gradient-text text-glow-lavender">that match</span>
+              <span className="text-primary">that match</span>
               <br />
               <span className="text-cream">your soul.</span>
             </h1>
 
-            <p className="text-cream/50 text-lg md:text-xl max-w-xl mb-10 leading-relaxed font-light">
+            <p className="text-cream/40 text-lg md:text-xl max-w-xl mb-10 leading-relaxed font-light">
               Curated cinema for every mood. From quiet drama to mind-bending sci-fi — your next favorite film is one mood away.
             </p>
 
@@ -164,7 +124,7 @@ export default function Landing() {
                 variant="solid"
                 size="lg"
                 onClick={() => navigate('/recommendations')}
-                icon={RiSparklingLine}
+                icon={RiFilmLine}
               >
                 Discover Films
               </GlowButton>
@@ -172,9 +132,9 @@ export default function Landing() {
                 variant="primary"
                 size="lg"
                 onClick={() => navigate('/assistant')}
-                icon={RiFilmLine}
+                icon={RiChat3Line}
               >
-                AI Cinema Guide
+                Film Assistant
               </GlowButton>
             </div>
           </motion.div>
@@ -185,13 +145,13 @@ export default function Landing() {
               key={heroMovie.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
               className="mt-16 flex items-center gap-4"
             >
-              <div className="flex items-center gap-3 glass px-4 py-3 rounded-2xl border border-white/10">
-                <RiPlayCircleLine className="w-5 h-5 text-coral" />
+              <div className="flex items-center gap-3 glass px-4 py-3 rounded-xl border border-slate">
+                <RiPlayCircleLine className="w-5 h-5 text-primary" />
                 <div>
-                  <p className="text-cream/40 text-xs uppercase tracking-widest">Now Trending</p>
+                  <p className="text-cream/35 text-xs uppercase tracking-widest">Now Trending</p>
                   <p className="text-cream font-medium text-sm mt-0.5">{heroMovie.title}</p>
                 </div>
               </div>
@@ -202,7 +162,7 @@ export default function Landing() {
                     key={i}
                     onClick={() => { setHeroIndex(i); setFeatured(trending[i]); }}
                     className={`rounded-full transition-all duration-300 ${
-                      i === heroIndex ? 'w-6 h-1.5 bg-coral' : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
+                      i === heroIndex ? 'w-6 h-1.5 bg-primary' : 'w-1.5 h-1.5 bg-white/15 hover:bg-white/30'
                     }`}
                   />
                 ))}
@@ -213,11 +173,11 @@ export default function Landing() {
 
         {/* Scroll Cue */}
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-cream/20"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-cream/15"
         >
-          <div className="w-px h-12 bg-gradient-to-b from-transparent to-cream/20" />
+          <div className="w-px h-12 bg-gradient-to-b from-transparent to-cream/15" />
           <span className="text-xs tracking-widest uppercase">Scroll</span>
         </motion.div>
       </section>
@@ -225,14 +185,14 @@ export default function Landing() {
       {/* ── Trending Carousel ─────────────────────────── */}
       <section className="py-20 max-w-7xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="flex items-end justify-between mb-10"
         >
           <div>
-            <p className="text-coral text-sm font-medium tracking-widest uppercase mb-2">This Week</p>
+            <p className="text-primary text-sm font-medium tracking-widest uppercase mb-2">This Week</p>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Trending Now</h2>
           </div>
           <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>
@@ -272,14 +232,14 @@ export default function Landing() {
       <section className="py-16 bg-gradient-to-b from-transparent via-noir-light/30 to-transparent">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="flex items-end justify-between mb-10"
           >
             <div>
-              <p className="text-teal text-sm font-medium tracking-widest uppercase mb-2">In Theaters</p>
+              <p className="text-accent text-sm font-medium tracking-widest uppercase mb-2">In Theaters</p>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Now Playing</h2>
             </div>
             <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>
@@ -301,37 +261,35 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── Mood CTA ─────────────────────────────────── */}
+      {/* ── CTA Section ───────────────────────────────── */}
       <section className="py-24 max-w-7xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-3xl p-12 md:p-20 text-center"
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-2xl p-12 md:p-20 text-center"
         >
           {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-coral/10 via-navy-light/50 to-teal/8" />
-          <div className="absolute inset-0 border border-white/8 rounded-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 ambient-orb bg-coral/15 animate-float" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/6 via-noir-light/50 to-accent/4" />
+          <div className="absolute inset-0 border border-slate rounded-2xl" />
 
           <div className="relative z-10">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
             >
-              <RiSparklingLine className="w-10 h-10 text-sun mx-auto mb-6" />
+              <RiChat3Line className="w-10 h-10 text-primary mx-auto mb-6" />
               <h2 className="font-display text-4xl md:text-5xl text-cream mb-4">
-                Let the AI guide your next{' '}
-                <span className="gradient-text">cinematic journey.</span>
+                Your next <span className="text-primary">cinematic journey</span> starts here.
               </h2>
-              <p className="text-cream/50 text-lg max-w-xl mx-auto mb-10">
-                Tell us how you're feeling. Our AI Cinema Guide finds the perfect film for every mood, moment, and emotion.
+              <p className="text-cream/40 text-lg max-w-xl mx-auto mb-10">
+                Tell us how you're feeling. Our Film Assistant finds the perfect film for every mood, moment, and emotion.
               </p>
               <GlowButton variant="solid" size="lg" onClick={() => navigate('/assistant')} icon={RiArrowRightLine}>
-                Launch AI Cinema Guide
+                Launch Film Assistant
               </GlowButton>
             </motion.div>
           </div>
@@ -341,14 +299,14 @@ export default function Landing() {
       {/* ── Popular Now ───────────────────────────────── */}
       <section className="py-16 max-w-7xl mx-auto px-6 pb-32">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="flex items-end justify-between mb-10"
         >
           <div>
-            <p className="text-sun text-sm font-medium tracking-widest uppercase mb-2">Highly Rated</p>
+            <p className="text-amber text-sm font-medium tracking-widest uppercase mb-2">Highly Rated</p>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-cream">Popular Films</h2>
           </div>
           <GlowButton variant="ghost" size="sm" onClick={() => navigate('/recommendations')} icon={RiArrowRightLine}>

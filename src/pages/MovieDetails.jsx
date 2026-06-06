@@ -46,7 +46,7 @@ export default function MovieDetails() {
   if (loading) return (
     <div className="min-h-screen bg-noir pt-28 pb-20">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="w-full h-80 skeleton rounded-3xl mb-8" />
+        <div className="w-full h-80 skeleton rounded-2xl mb-8" />
         <SkeletonDetails />
       </div>
     </div>
@@ -55,8 +55,8 @@ export default function MovieDetails() {
   if (!movie) return (
     <div className="min-h-screen bg-noir flex items-center justify-center">
       <div className="text-center">
-        <p className="text-cream/30 text-5xl mb-4">🎬</p>
-        <p className="text-cream/50">Movie not found.</p>
+        <p className="text-cream/25 text-5xl mb-4">🎬</p>
+        <p className="text-cream/45">Movie not found.</p>
         <GlowButton onClick={() => navigate(-1)} className="mt-6" icon={RiArrowLeftLine}>Go Back</GlowButton>
       </div>
     </div>
@@ -85,9 +85,9 @@ export default function MovieDetails() {
       <div className="relative h-[65vh] md:h-[75vh] overflow-hidden">
         {backdropUrl && !imgError ? (
           <motion.img
-            initial={{ scale: 1.08, opacity: 0 }}
+            initial={{ scale: 1.05, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
             src={backdropUrl}
             alt={movie.title}
             className="w-full h-full object-cover"
@@ -96,17 +96,17 @@ export default function MovieDetails() {
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-noir-light to-noir" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-noir via-transparent to-noir/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-noir via-noir/75 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-noir via-transparent to-noir/30" />
 
         {/* Back Button */}
         <div className="absolute top-24 left-6 z-20">
           <motion.button
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 glass px-4 py-2.5 rounded-xl border border-white/10 text-cream/60 hover:text-cream transition-all text-sm"
+            className="flex items-center gap-2 glass px-4 py-2.5 rounded-xl border border-slate text-cream/50 hover:text-cream transition-all text-sm"
           >
             <RiArrowLeftLine className="w-4 h-4" />
             Back
@@ -116,14 +116,14 @@ export default function MovieDetails() {
         {/* Rating Badge */}
         {rating && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-            className="absolute bottom-8 right-8 rating-badge px-5 py-3 rounded-2xl text-center"
+            transition={{ delay: 0.4, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+            className="absolute bottom-8 right-8 rating-badge px-5 py-3 rounded-xl text-center"
           >
-            <RiStarFill className="w-5 h-5 text-peach mx-auto mb-1" />
+            <RiStarFill className="w-5 h-5 text-amber mx-auto mb-1" />
             <div className="text-2xl font-bold text-cream font-display">{rating}</div>
-            <div className="text-cream/40 text-xs">{movie.vote_count?.toLocaleString()} votes</div>
+            <div className="text-cream/35 text-xs">{movie.vote_count?.toLocaleString()} votes</div>
           </motion.div>
         )}
       </div>
@@ -133,35 +133,35 @@ export default function MovieDetails() {
         <div className="flex flex-col md:flex-row gap-8 md:gap-12">
           {/* Poster */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ delay: 0.2, duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
             className="shrink-0 w-40 md:w-56"
           >
             {posterUrl ? (
               <img
                 src={posterUrl}
                 alt={movie.title}
-                className="w-full rounded-2xl shadow-card-hover border border-white/10"
+                className="w-full rounded-xl shadow-card-hover border border-slate"
               />
             ) : (
-              <div className="w-full aspect-[2/3] rounded-2xl bg-noir-light border border-white/10 flex items-center justify-center">
-                <RiPlayCircleLine className="w-10 h-10 text-cream/20" />
+              <div className="w-full aspect-[2/3] rounded-xl bg-noir-light border border-slate flex items-center justify-center">
+                <RiPlayCircleLine className="w-10 h-10 text-cream/15" />
               </div>
             )}
           </motion.div>
 
           {/* Info */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ delay: 0.3, duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
             className="flex-1 pt-4"
           >
             {/* Genres */}
             <div className="flex flex-wrap gap-2 mb-4">
               {genres.map(g => (
-                <span key={g.id} className="genre-chip text-xs active text-lavender bg-lavender/10 border-lavender/25 px-3 py-1">
+                <span key={g.id} className="genre-chip text-xs active text-primary bg-primary/8 border-primary/20 px-3 py-1">
                   {g.name}
                 </span>
               ))}
@@ -173,11 +173,11 @@ export default function MovieDetails() {
             </h1>
 
             {movie.tagline && (
-              <p className="text-cream/40 italic text-base mb-5 font-light">"{movie.tagline}"</p>
+              <p className="text-cream/35 italic text-base mb-5 font-light">"{movie.tagline}"</p>
             )}
 
             {/* Meta Row */}
-            <div className="flex flex-wrap items-center gap-5 text-sm text-cream/50 mb-8">
+            <div className="flex flex-wrap items-center gap-5 text-sm text-cream/40 mb-8">
               {year && (
                 <span className="flex items-center gap-1.5">
                   <RiCalendarLine className="w-4 h-4" />
@@ -231,8 +231,8 @@ export default function MovieDetails() {
             {/* Overview */}
             {movie.overview && (
               <div>
-                <h2 className="text-cream/40 text-xs uppercase tracking-widest mb-3">Overview</h2>
-                <p className="text-cream/75 leading-relaxed text-base font-light max-w-2xl">
+                <h2 className="text-cream/35 text-xs uppercase tracking-widest mb-3">Overview</h2>
+                <p className="text-cream/65 leading-relaxed text-base font-light max-w-2xl">
                   {movie.overview}
                 </p>
               </div>
@@ -243,10 +243,10 @@ export default function MovieDetails() {
         {/* ── Cast ───────────────────────────────────── */}
         {cast.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="mt-16"
           >
             <h2 className="font-display text-2xl text-cream mb-6">Cast</h2>
@@ -254,13 +254,13 @@ export default function MovieDetails() {
               {cast.map((person, i) => (
                 <motion.div
                   key={person.id}
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 16 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.04, duration: 0.5 }}
+                  transition={{ delay: i * 0.03, duration: 0.4 }}
                   className="shrink-0 w-24 text-center group"
                 >
-                  <div className="w-20 h-20 mx-auto rounded-full overflow-hidden mb-2 border-2 border-white/10 group-hover:border-lavender/40 transition-colors">
+                  <div className="w-20 h-20 mx-auto rounded-full overflow-hidden mb-2 border-2 border-slate group-hover:border-primary/30 transition-colors">
                     {person.profile_path ? (
                       <img
                         src={getImageUrl(person.profile_path, 'w185')}
@@ -268,13 +268,13 @@ export default function MovieDetails() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-noir-light flex items-center justify-center text-cream/20 text-xl font-display">
+                      <div className="w-full h-full bg-noir-light flex items-center justify-center text-cream/15 text-xl font-display">
                         {person.name?.charAt(0)}
                       </div>
                     )}
                   </div>
-                  <p className="text-cream/80 text-xs font-medium leading-tight">{person.name}</p>
-                  <p className="text-cream/30 text-xs mt-0.5 line-clamp-1">{person.character}</p>
+                  <p className="text-cream/70 text-xs font-medium leading-tight">{person.name}</p>
+                  <p className="text-cream/25 text-xs mt-0.5 line-clamp-1">{person.character}</p>
                 </motion.div>
               ))}
             </div>
@@ -284,10 +284,10 @@ export default function MovieDetails() {
         {/* ── Similar Movies ──────────────────────────── */}
         {similar.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="mt-16"
           >
             <h2 className="font-display text-2xl text-cream mb-6">You Might Also Like</h2>

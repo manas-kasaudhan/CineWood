@@ -6,8 +6,8 @@ import MovieCard from '../components/MovieCard';
 import GlowButton from '../components/GlowButton';
 import { SkeletonCard } from '../components/Skeleton';
 import {
-  RiRobot2Line, RiSendPlaneLine, RiSparklingLine,
-  RiFilmLine, RiLoader4Line
+  RiChat3Line, RiSendPlaneLine, RiFilmLine,
+  RiLoader4Line, RiSparklingLine
 } from 'react-icons/ri';
 
 const QUICK_PROMPTS = [
@@ -22,8 +22,8 @@ const QUICK_PROMPTS = [
 ];
 
 const AI_RESPONSES = {
-  'mind-bending': "The matrix of cinema awaits you. These films will unravel the fabric of your reality — prepare for a journey into the depths of perception and consciousness.",
-  'emotional': "Cinema's greatest power is making us feel. These films will reach into your soul and leave an indelible mark — have tissues ready.",
+  'mind-bending': "These films will unravel the fabric of your reality — prepare for a journey into the depths of perception and consciousness.",
+  'emotional': "Cinema's greatest power is making us feel. These films will reach into your soul and leave an indelible mark.",
   'feel-good': "Sometimes you need film as a warm embrace. These selections radiate joy and leave you smiling long after the credits roll.",
   'thriller': "Buckle in. These films will keep you on the edge of your seat, pulse racing, second-guessing every frame.",
   'adventure': "Your passport to extraordinary worlds. These epics will take you beyond the horizon and into the realm of legend.",
@@ -62,7 +62,7 @@ function TypingIndicator() {
       {[0, 1, 2].map(i => (
         <motion.div
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-lavender/60"
+          className="w-1.5 h-1.5 rounded-full bg-primary/50"
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 0.6, delay: i * 0.15, repeat: Infinity }}
         />
@@ -76,7 +76,7 @@ export default function Assistant() {
   const [messages, setMessages] = useState([
     {
       role: 'ai',
-      content: "Welcome to Cinewood's AI Cinema Guide. I'm here to help you find the perfect film for any mood, moment, or emotion. What kind of cinematic experience are you looking for tonight?",
+      content: "Welcome to Cinewood's Film Assistant. I'm here to help you find the perfect film for any mood, moment, or emotion. What kind of cinematic experience are you looking for tonight?",
       movies: [],
     }
   ]);
@@ -131,46 +131,39 @@ export default function Assistant() {
 
   return (
     <div className="min-h-screen bg-noir pt-24 pb-8 flex flex-col">
-      {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/6 w-80 h-80 ambient-orb bg-lavender/12 animate-float" />
-        <div className="absolute bottom-1/3 right-1/6 w-60 h-60 ambient-orb bg-dusty/10 animate-float-slow" />
-        <div className="absolute top-2/3 left-1/2 w-48 h-48 ambient-orb bg-mist/10 animate-float-fast" />
-      </div>
-
       <div className="max-w-4xl mx-auto w-full px-6 flex flex-col flex-1">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-8"
         >
-          <div className="inline-flex items-center justify-center w-14 h-14 glass rounded-2xl border border-lavender/20 mb-4 animate-pulse-glow">
-            <RiRobot2Line className="w-7 h-7 text-lavender" />
+          <div className="inline-flex items-center justify-center w-14 h-14 glass rounded-2xl border border-slate mb-4">
+            <RiChat3Line className="w-7 h-7 text-primary" />
           </div>
-          <h1 className="font-display text-3xl md:text-4xl text-cream mb-2">AI Cinema Guide</h1>
-          <p className="text-cream/40 text-sm">Powered by mood intelligence & cinematic taste</p>
+          <h1 className="font-display text-3xl md:text-4xl text-cream mb-2">Film Assistant</h1>
+          <p className="text-cream/35 text-sm">Find your next favorite film</p>
         </motion.div>
 
         {/* Quick Prompts */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
           className="flex flex-wrap gap-2 justify-center mb-8"
         >
           {QUICK_PROMPTS.map((prompt, i) => (
             <motion.button
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 + i * 0.05 }}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+              transition={{ delay: 0.1 + i * 0.04 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => handleQuickPrompt(prompt)}
               disabled={loading}
-              className="flex items-center gap-1.5 glass px-3.5 py-2 rounded-full border border-white/10 text-xs text-cream/60 hover:text-cream hover:border-lavender/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 glass px-3.5 py-2 rounded-full border border-slate text-xs text-cream/50 hover:text-cream hover:border-primary/25 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <span>{prompt.icon}</span>
               <span>{prompt.text}</span>
@@ -184,25 +177,25 @@ export default function Assistant() {
             {messages.map((msg, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'ai' && (
-                  <div className="shrink-0 w-8 h-8 glass rounded-xl flex items-center justify-center border border-lavender/20 mt-1">
-                    <RiSparklingLine className="w-4 h-4 text-lavender" />
+                  <div className="shrink-0 w-8 h-8 glass rounded-xl flex items-center justify-center border border-slate mt-1">
+                    <RiSparklingLine className="w-4 h-4 text-primary" />
                   </div>
                 )}
 
                 <div className={`max-w-2xl ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-3`}>
                   <div className={msg.role === 'user' ? 'chat-bubble-user px-5 py-3.5' : 'chat-bubble-ai px-5 py-3.5'}>
-                    <p className="text-cream/85 text-sm leading-relaxed">{msg.content}</p>
+                    <p className="text-cream/80 text-sm leading-relaxed">{msg.content}</p>
                   </div>
 
                   {/* Mood label */}
                   {msg.mood && (
-                    <span className="text-xs text-lavender/60 font-medium px-1">
+                    <span className="text-xs text-primary/50 font-medium px-1">
                       ✦ {msg.mood} picks
                     </span>
                   )}
@@ -218,8 +211,8 @@ export default function Assistant() {
                 </div>
 
                 {msg.role === 'user' && (
-                  <div className="shrink-0 w-8 h-8 bg-gradient-to-br from-lavender/30 to-dusty/20 rounded-xl flex items-center justify-center border border-lavender/20 mt-1">
-                    <RiFilmLine className="w-4 h-4 text-lavender" />
+                  <div className="shrink-0 w-8 h-8 bg-primary/15 rounded-xl flex items-center justify-center border border-primary/20 mt-1">
+                    <RiFilmLine className="w-4 h-4 text-primary" />
                   </div>
                 )}
               </motion.div>
@@ -229,13 +222,13 @@ export default function Assistant() {
             {loading && (
               <motion.div
                 key="typing"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 className="flex gap-4"
               >
-                <div className="shrink-0 w-8 h-8 glass rounded-xl flex items-center justify-center border border-lavender/20">
-                  <RiSparklingLine className="w-4 h-4 text-lavender animate-pulse" />
+                <div className="shrink-0 w-8 h-8 glass rounded-xl flex items-center justify-center border border-slate">
+                  <RiSparklingLine className="w-4 h-4 text-primary animate-pulse" />
                 </div>
                 <div className="chat-bubble-ai">
                   <TypingIndicator />
@@ -248,10 +241,10 @@ export default function Assistant() {
 
         {/* Input Area */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="glass rounded-2xl border border-white/10 p-2 flex items-end gap-3"
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="glass rounded-xl border border-slate p-2 flex items-end gap-3"
         >
           <textarea
             value={input}
@@ -265,7 +258,7 @@ export default function Assistant() {
             placeholder="Tell me your mood, what you're feeling, or what kind of film you want…"
             rows={2}
             disabled={loading}
-            className="flex-1 bg-transparent text-cream placeholder-cream/25 text-sm resize-none focus:outline-none px-3 py-2 leading-relaxed disabled:opacity-50"
+            className="flex-1 bg-transparent text-cream placeholder-cream/20 text-sm resize-none focus:outline-none px-3 py-2 leading-relaxed disabled:opacity-50"
           />
           <GlowButton
             variant="solid"
@@ -279,8 +272,8 @@ export default function Assistant() {
           </GlowButton>
         </motion.div>
 
-        <p className="text-center text-cream/20 text-xs mt-3">
-          Powered by TMDB · Cinewood AI Cinema Guide
+        <p className="text-center text-cream/15 text-xs mt-3">
+          Powered by TMDB · Cinewood Film Assistant
         </p>
       </div>
     </div>

@@ -10,28 +10,27 @@ import {
 } from 'react-icons/ri';
 
 const TABS = [
-  { id: 'watchlist', label: 'Watchlist', icon: RiBookmarkLine, color: 'lavender' },
-  { id: 'favorites', label: 'Favorites', icon: RiHeartLine, color: 'dusty' },
-  { id: 'recent', label: 'Recently Watched', icon: RiHistoryLine, color: 'peach' },
-  { id: 'moods', label: 'Mood History', icon: RiEmotionLine, color: 'mist' },
+  { id: 'watchlist', label: 'Watchlist', icon: RiBookmarkLine, color: 'primary' },
+  { id: 'favorites', label: 'Favorites', icon: RiHeartLine, color: 'primary' },
+  { id: 'recent', label: 'Recently Watched', icon: RiHistoryLine, color: 'amber' },
+  { id: 'moods', label: 'Mood History', icon: RiEmotionLine, color: 'accent' },
 ];
 
 function StatCard({ icon: Icon, label, value, color }) {
   const colors = {
-    lavender: 'text-lavender border-lavender/20 bg-lavender/5',
-    dusty: 'text-dusty border-dusty/20 bg-dusty/5',
-    peach: 'text-peach border-peach/20 bg-peach/5',
-    mist: 'text-mist border-mist/20 bg-mist/5',
+    primary: 'text-primary border-primary/15 bg-primary/5',
+    amber: 'text-amber border-amber/15 bg-amber/5',
+    accent: 'text-accent border-accent/15 bg-accent/5',
   };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -4 }}
-      className={`stat-card p-6 border ${colors[color] || colors.lavender}`}
+      whileHover={{ scale: 1.01, y: -2 }}
+      className={`stat-card p-6 border ${colors[color] || colors.primary}`}
     >
-      <Icon className="w-5 h-5 mb-3 opacity-70" />
+      <Icon className="w-5 h-5 mb-3 opacity-60" />
       <div className="text-2xl font-display font-semibold text-cream mb-1">{value}</div>
-      <div className="text-cream/40 text-xs font-medium">{label}</div>
+      <div className="text-cream/35 text-xs font-medium">{label}</div>
     </motion.div>
   );
 }
@@ -39,8 +38,8 @@ function StatCard({ icon: Icon, label, value, color }) {
 function EmptyState({ icon: Icon, message }) {
   return (
     <div className="py-24 text-center">
-      <Icon className="w-12 h-12 text-cream/10 mx-auto mb-4" />
-      <p className="text-cream/30 text-sm">{message}</p>
+      <Icon className="w-12 h-12 text-cream/8 mx-auto mb-4" />
+      <p className="text-cream/25 text-sm">{message}</p>
     </div>
   );
 }
@@ -65,10 +64,10 @@ export default function Profile() {
   const totalMoods = moodHistory.length;
 
   const stats = [
-    { icon: RiFilmLine, label: 'Films Logged', value: totalWatched, color: 'lavender' },
-    { icon: RiHeartLine, label: 'Favorites', value: totalFaves, color: 'dusty' },
-    { icon: RiBookmarkLine, label: 'Watchlist', value: totalWatchlist, color: 'peach' },
-    { icon: RiEmotionLine, label: 'Mood Sessions', value: totalMoods, color: 'mist' },
+    { icon: RiFilmLine, label: 'Films Logged', value: totalWatched, color: 'primary' },
+    { icon: RiHeartLine, label: 'Favorites', value: totalFaves, color: 'primary' },
+    { icon: RiBookmarkLine, label: 'Watchlist', value: totalWatchlist, color: 'amber' },
+    { icon: RiEmotionLine, label: 'Mood Sessions', value: totalMoods, color: 'accent' },
   ];
 
   const renderContent = () => {
@@ -78,7 +77,7 @@ export default function Profile() {
           <div>
             {watchlist.length > 0 && (
               <div className="flex items-center justify-between mb-6">
-                <p className="text-cream/40 text-sm">{watchlist.length} film{watchlist.length !== 1 ? 's' : ''} saved</p>
+                <p className="text-cream/35 text-sm">{watchlist.length} film{watchlist.length !== 1 ? 's' : ''} saved</p>
               </div>
             )}
             <MovieGrid movies={watchlist} emptyIcon={RiBookmarkLine} emptyMessage="Your watchlist is empty. Start adding films you want to watch!" />
@@ -91,33 +90,33 @@ export default function Profile() {
           <div>
             {recentlyWatched.length > 0 && (
               <div className="flex items-center justify-between mb-6">
-                <p className="text-cream/40 text-sm">{recentlyWatched.length} film{recentlyWatched.length !== 1 ? 's' : ''} visited</p>
+                <p className="text-cream/35 text-sm">{recentlyWatched.length} film{recentlyWatched.length !== 1 ? 's' : ''} visited</p>
               </div>
             )}
             <MovieGrid movies={recentlyWatched} emptyIcon={RiHistoryLine} emptyMessage="Films you visit will appear here automatically." />
           </div>
         );
       case 'moods':
-        if (!moodHistory.length) return <EmptyState icon={RiEmotionLine} emptyMessage="No mood sessions yet. Use the AI Cinema Guide to get personalized picks!" />;
+        if (!moodHistory.length) return <EmptyState icon={RiEmotionLine} emptyMessage="No mood sessions yet. Use the Film Assistant to get personalized picks!" />;
         return (
           <div className="space-y-8">
             {moodHistory.map((entry, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
+                transition={{ delay: i * 0.06 }}
                 className="glass-card rounded-2xl p-5"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="glass w-8 h-8 rounded-xl flex items-center justify-center border border-lavender/20">
-                    <RiEmotionLine className="w-4 h-4 text-lavender" />
+                  <div className="glass w-8 h-8 rounded-xl flex items-center justify-center border border-primary/15">
+                    <RiEmotionLine className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-cream/80 text-sm font-medium capitalize">
+                    <p className="text-cream/70 text-sm font-medium capitalize">
                       {MOOD_MAPPINGS[entry.mood]?.label || entry.mood} Mood
                     </p>
-                    <p className="text-cream/30 text-xs">
+                    <p className="text-cream/25 text-xs">
                       {new Date(entry.timestamp).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
                       })}
@@ -142,30 +141,24 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-noir pt-24 pb-20">
-      {/* Ambient */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-32 right-1/4 w-72 h-72 ambient-orb bg-lavender/10 animate-float" />
-        <div className="absolute bottom-1/2 left-1/6 w-48 h-48 ambient-orb bg-dusty/8 animate-float-slow" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 relative">
         {/* Profile Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="mb-12"
         >
           <div className="flex items-center gap-5 mb-8">
             <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-lavender/30 to-dusty/20 flex items-center justify-center border border-lavender/20 animate-pulse-glow">
-                <RiUserLine className="w-8 h-8 text-lavender" />
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/15">
+                <RiUserLine className="w-8 h-8 text-primary" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-lavender rounded-full border-2 border-noir" />
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-accent rounded-full border-2 border-noir" />
             </div>
             <div>
               <h1 className="font-display text-3xl md:text-4xl text-cream">My Cinema</h1>
-              <p className="text-cream/40 text-sm mt-1">Your personal film universe</p>
+              <p className="text-cream/35 text-sm mt-1">Your personal film universe</p>
             </div>
           </div>
 
@@ -174,9 +167,9 @@ export default function Profile() {
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08, duration: 0.6 }}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
               >
                 <StatCard {...stat} />
               </motion.div>
@@ -186,35 +179,34 @@ export default function Profile() {
 
         {/* Tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
+          transition={{ delay: 0.25, duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex items-center gap-1 glass p-1.5 rounded-2xl border border-white/8 w-fit overflow-x-auto hide-scrollbar">
+          <div className="flex items-center gap-1 glass p-1.5 rounded-xl border border-slate w-fit overflow-x-auto hide-scrollbar">
             {TABS.map(tab => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               const activeColors = {
-                lavender: 'bg-lavender/15 text-lavender border-lavender/25',
-                dusty: 'bg-dusty/15 text-dusty border-dusty/25',
-                peach: 'bg-peach/15 text-peach border-peach/25',
-                mist: 'bg-mist/15 text-mist border-mist/25',
+                primary: 'bg-primary/10 text-primary border-primary/20',
+                amber: 'bg-amber/10 text-amber border-amber/20',
+                accent: 'bg-accent/10 text-accent border-accent/20',
               };
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                  className={`relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? `border ${activeColors[tab.color]}`
-                      : 'text-cream/40 hover:text-cream/70 border border-transparent'
+                      : 'text-cream/35 hover:text-cream/60 border border-transparent'
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="tab-bg"
-                      className={`absolute inset-0 rounded-xl border ${activeColors[tab.color]}`}
+                      className={`absolute inset-0 rounded-lg border ${activeColors[tab.color]}`}
                       transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                     />
                   )}
@@ -230,10 +222,10 @@ export default function Profile() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
           >
             {renderContent()}
           </motion.div>
